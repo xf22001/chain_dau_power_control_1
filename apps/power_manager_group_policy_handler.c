@@ -6,7 +6,7 @@
  *   文件名称：power_manager_group_policy_handler.c
  *   创 建 者：肖飞
  *   创建日期：2021年11月30日 星期二 15时07分16秒
- *   修改日期：2022年03月12日 星期六 10时32分39秒
+ *   修改日期：2022年03月12日 星期六 14时26分48秒
  *   描    述：
  *
  *================================================================*/
@@ -20,14 +20,12 @@
 static int init_average(void *_power_manager_info)
 {
 	int ret = 0;
-
 	return ret;
 }
 
 static int deinit_average(void *_power_manager_info)
 {
 	int ret = 0;
-
 	return ret;
 }
 
@@ -44,6 +42,25 @@ static int channel_start_average(void *_power_manager_channel_info)
 static int channel_charging_average(void *_power_manager_channel_info)
 {
 	int ret = 0;
+	power_manager_channel_info_t *power_manager_channel_info = (power_manager_channel_info_t *)_power_manager_channel_info;
+	uint32_t ticks = osKernelSysTick();
+
+	if(ticks_duration(ticks, power_manager_channel_info->output_current_alive_stamp) > 5000) {
+		power_manager_group_info_t *power_manager_group_info = (power_manager_group_info_t *)power_manager_channel_info->power_manager_group_info;
+
+		if(list_size(&power_manager_channel_info->power_module_group_list) > 1) {
+			power_module_group_info_t *power_module_group_info = list_first_entry(&power_manager_channel_info->power_module_group_list, power_module_group_info_t, list);
+			power_module_item_info_t *power_module_item_info;
+			struct list_head *head1 = &power_module_group_info->power_module_item_list;
+			list_for_each_entry(power_module_item_info, head1, power_module_item_info_t, list) {
+				power_module_item_info->status.state = POWER_MODULE_ITEM_STATE_PREPARE_DEACTIVE;
+			}
+			list_move_tail(&power_module_group_info->list, &power_manager_group_info->power_module_group_deactive_list);
+			debug("remove module group %d from channel %d", power_module_group_info->id, power_manager_channel_info->id);
+			power_manager_channel_info->output_current_alive_stamp = ticks;
+		}
+	}
+
 	return ret;
 }
 
@@ -64,7 +81,7 @@ static void channel_info_deactive_power_module_group(power_manager_channel_info_
 			power_module_item_info->status.state = POWER_MODULE_ITEM_STATE_PREPARE_DEACTIVE;
 		}
 		list_move_tail(&power_module_group_info->list, &power_manager_group_info->power_module_group_deactive_list);
-		debug("remove module group_id %d from channel_id %d", power_module_group_info->id, power_manager_channel_info->id);
+		debug("remove module group %d from channel %d", power_module_group_info->id, power_manager_channel_info->id);
 	}
 }
 
@@ -240,13 +257,13 @@ void power_manager_restore_config(channels_info_t *channels_info)
 			power_manager_group_settings->slot_per_relay_board[j] = 6;
 		}
 
-		power_manager_group_settings->power_module_group_number = 1;
+		power_manager_group_settings->power_module_group_number = 14;
 
 		channels_info->channel_number += power_manager_group_settings->channel_number;
 
 		for(j = 0; j < power_manager_group_settings->power_module_group_number; j++) {
 			power_module_group_settings_t *power_module_group_settings = &power_manager_group_settings->power_module_group_settings[j];
-			power_module_group_settings->power_module_number = 14;
+			power_module_group_settings->power_module_number = 1;
 		}
 	}
 
