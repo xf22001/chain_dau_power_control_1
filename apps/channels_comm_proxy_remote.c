@@ -6,7 +6,7 @@
  *   文件名称：channels_comm_proxy_remote.c
  *   创 建 者：肖飞
  *   创建日期：2021年09月16日 星期四 10时34分46秒
- *   修改日期：2022年03月12日 星期六 22时54分40秒
+ *   修改日期：2022年03月14日 星期一 09时31分19秒
  *   描    述：
  *
  *================================================================*/
@@ -793,6 +793,8 @@ static void channels_comm_proxy_request(channels_info_t *channels_info, can_info
 				      get_channels_comm_proxy_command_des(item->cmd),
 				      can_com_cmd_common->index);
 			}
+
+			can_info_signal(can_info);
 
 			return;
 		}
