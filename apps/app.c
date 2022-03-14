@@ -6,7 +6,7 @@
  *   文件名称：app.c
  *   创 建 者：肖飞
  *   创建日期：2019年10月11日 星期五 16时54分03秒
- *   修改日期：2022年03月11日 星期五 17时27分31秒
+ *   修改日期：2022年03月14日 星期一 11时18分21秒
  *   描    述：
  *
  *================================================================*/
@@ -216,7 +216,7 @@ void app(void const *argument)
 	ret = app_load_config();
 
 	if(ret == 0) {
-		app_info->mechine_info.reset_config = 1;
+		//app_info->mechine_info.reset_config = 1;
 		debug("app load config successful!");
 		reset_config = app_info->mechine_info.reset_config;
 
@@ -237,7 +237,7 @@ void app(void const *argument)
 		snprintf(app_info->mechine_info.ip, sizeof(app_info->mechine_info.ip), "%d.%d.%d.%d", 10, 42, 0, 122);
 		snprintf(app_info->mechine_info.sn, sizeof(app_info->mechine_info.sn), "%d.%d.%d.%d", 255, 255, 255, 0);
 		snprintf(app_info->mechine_info.gw, sizeof(app_info->mechine_info.gw), "%d.%d.%d.%d", 10, 42, 0, 1);
-		app_info->mechine_info.dhcp_enable = 0;
+		app_info->mechine_info.dhcp_enable = 1;
 		app_info->mechine_info.reset_config = 0;
 		app_save_config();
 	}
@@ -259,9 +259,9 @@ void app(void const *argument)
 	probe_broadcast_add_poll_loop(poll_loop);
 	probe_server_add_poll_loop(poll_loop);
 
-	while(is_log_server_valid() == 0) {
-		osDelay(1);
-	}
+	//while(is_log_server_valid() == 0) {
+	//	osDelay(1);
+	//}
 
 	add_log_handler((log_fn_t)log_udp_data);
 
