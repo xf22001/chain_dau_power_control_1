@@ -6,7 +6,7 @@
  *   文件名称：channels_comm_proxy_remote.c
  *   创 建 者：肖飞
  *   创建日期：2021年09月16日 星期四 10时34分46秒
- *   修改日期：2022年03月14日 星期一 09时31分19秒
+ *   修改日期：2022年03月14日 星期一 15时35分13秒
  *   描    述：
  *
  *================================================================*/
@@ -152,6 +152,7 @@ static int response_channel_require(channels_info_t *channels_info, void *_comma
 	proxy_channel_item_t *proxy_channel_item = get_proxy_channel_item_by_proxy_channel_index(&channels_config->proxy_channel_info, proxy_channel_index);
 	channel_info_t *channel_info = channels_info->channel_info + proxy_channel_item->channel_id;
 	channel_require_t *channel_require = (channel_require_t *)channels_comm_proxy_ctx->can_rx_msg->Data;
+	uint8_t channel_fault = 0;
 
 	channel_info->require_voltage = get_u16_from_u8_lh(
 	                                    channel_require->require_voltage_l,
@@ -190,12 +191,16 @@ static int response_channel_require(channels_info_t *channels_info, void *_comma
 		data_ctx->require_state = channel_require->require_state;
 	}
 
-	if(get_fault(channel_info->faults, CHANNEL_FAULT_FAULT) != channel_require->fault_stop) {
-		set_fault(channel_info->faults, CHANNEL_FAULT_FAULT, channel_require->fault_stop);
+	if(channel_require->fault_stop != 0) {
+		channel_fault = 1;
+	}
 
-		debug("channel:%d update fault:%d", channel_info->channel_id, channel_require->fault_stop);
+	if(get_fault(channel_info->faults, CHANNEL_FAULT_FAULT) != channel_fault) {
+		set_fault(channel_info->faults, CHANNEL_FAULT_FAULT, channel_fault);
 
-		if(channel_require->fault_stop != 0) {//停机
+		debug("channel:%d update fault:%d", channel_info->channel_id, channel_fault);
+
+		if(channel_fault != 0) {//停机
 			command_status_t *cmd_ctx_module_ready = channel_ctx->cmd_ctx + channels_comm_proxy_command_enum(MODULES_READY);
 
 			cmd_ctx_module_ready->state = COMMAND_STATE_IDLE;

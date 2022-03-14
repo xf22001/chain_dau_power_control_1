@@ -6,7 +6,7 @@
  *   文件名称：app.c
  *   创 建 者：肖飞
  *   创建日期：2019年10月11日 星期五 16时54分03秒
- *   修改日期：2022年03月14日 星期一 11时18分21秒
+ *   修改日期：2022年03月14日 星期一 16时15分36秒
  *   描    述：
  *
  *================================================================*/
@@ -197,6 +197,21 @@ uint8_t app_get_reset_config(void)
 	return reset_config;
 }
 
+static void modify_valid_time(void)
+{
+	struct tm tm = {0};
+	time_t ts;
+
+	tm.tm_year = 2021 - 1900;
+	tm.tm_mon = 1 - 1;
+	tm.tm_mday = 1;
+	tm.tm_hour = 0;
+	tm.tm_min = 0;
+	tm.tm_sec = 0;
+	ts = mktime(&tm);
+	set_time(ts);
+}
+
 void app(void const *argument)
 {
 	poll_loop_t *poll_loop;
@@ -267,7 +282,7 @@ void app(void const *argument)
 
 	debug("===========================================start app============================================");
 
-	app_info_t *app_info = get_app_info();
+	modify_valid_time();
 	channels_info = start_channels();
 	OS_ASSERT(channels_info != NULL);
 

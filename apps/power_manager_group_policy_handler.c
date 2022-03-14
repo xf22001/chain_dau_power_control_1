@@ -6,7 +6,7 @@
  *   文件名称：power_manager_group_policy_handler.c
  *   创 建 者：肖飞
  *   创建日期：2021年11月30日 星期二 15时07分16秒
- *   修改日期：2022年03月12日 星期六 14时26分48秒
+ *   修改日期：2022年03月14日 星期一 16时18分26秒
  *   描    述：
  *
  *================================================================*/
@@ -45,7 +45,7 @@ static int channel_charging_average(void *_power_manager_channel_info)
 	power_manager_channel_info_t *power_manager_channel_info = (power_manager_channel_info_t *)_power_manager_channel_info;
 	uint32_t ticks = osKernelSysTick();
 
-	if(ticks_duration(ticks, power_manager_channel_info->output_current_alive_stamp) > 5000) {
+	if(ticks_duration(ticks, power_manager_channel_info->output_current_alive_stamp) > 3000) {
 		power_manager_group_info_t *power_manager_group_info = (power_manager_group_info_t *)power_manager_channel_info->power_manager_group_info;
 
 		if(list_size(&power_manager_channel_info->power_module_group_list) > 1) {
@@ -219,22 +219,6 @@ power_manager_group_policy_handler_t *get_power_manager_group_policy_handler(uin
 	return power_manager_group_policy_handler;
 }
 
-static void modify_valid_time(void)
-{
-	struct tm tm = {0};
-	time_t ts;
-
-	tm.tm_year = 2021 - 1900;
-	tm.tm_mon = 1 - 1;
-	tm.tm_mon = 1 - 1;
-	tm.tm_mday = 1;
-	tm.tm_hour = 0;
-	tm.tm_min = 0;
-	tm.tm_sec = 0;
-	ts = mktime(&tm);
-	set_time(ts);
-}
-
 void power_manager_restore_config(channels_info_t *channels_info)
 {
 	int i;
@@ -266,7 +250,5 @@ void power_manager_restore_config(channels_info_t *channels_info)
 			power_module_group_settings->power_module_number = 1;
 		}
 	}
-
-	modify_valid_time();
 }
 
