@@ -6,7 +6,7 @@
  *   文件名称：modbus_addr_handler.c
  *   创 建 者：肖飞
  *   创建日期：2020年07月17日 星期五 10时13分49秒
- *   修改日期：2022年03月11日 星期五 13时03分21秒
+ *   修改日期：2022年03月15日 星期二 11时50分01秒
  *   描    述：
  *
  *================================================================*/
@@ -918,10 +918,7 @@ void channels_modbus_data_action(void *fn_ctx, void *chain_ctx)
 		break;
 
 		case MODBUS_ADDR_PDU_GROUP_FAULT: {
-			power_manager_info_t *power_manager_info = (power_manager_info_t *)channels_info->power_manager_info;
-			power_manager_group_info_t *power_manager_group_info = power_manager_info->power_manager_group_info + 0;
-			uint8_t fault = *power_manager_group_info->faults->data;
-			modbus_data_value_r(modbus_data_ctx, fault);
+			modbus_data_value_r(modbus_data_ctx, 0);
 		}
 		break;
 
