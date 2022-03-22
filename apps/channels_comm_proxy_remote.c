@@ -6,7 +6,7 @@
  *   文件名称：channels_comm_proxy_remote.c
  *   创 建 者：肖飞
  *   创建日期：2021年09月16日 星期四 10时34分46秒
- *   修改日期：2022年03月14日 星期一 15时35分13秒
+ *   修改日期：2022年03月22日 星期二 08时55分20秒
  *   描    述：
  *
  *================================================================*/
@@ -175,6 +175,7 @@ static int response_channel_require(channels_info_t *channels_info, void *_comma
 		      get_channel_require_work_state_des(channel_require->require_state));
 
 		switch(channel_require->require_state) {
+			case CHANNEL_WORK_STATE_IDLE:
 			case CHANNEL_WORK_STATE_STOP: {//停机
 				command_status_t *cmd_ctx_module_ready = channel_ctx->cmd_ctx + channels_comm_proxy_command_enum(MODULES_READY);
 

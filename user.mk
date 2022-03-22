@@ -104,6 +104,7 @@ USER_C_SOURCES += apps/modules/app/power_modules/power_modules_handler_yyln.c
 USER_C_SOURCES += apps/modules/app/power_modules/power_modules_handler_winline.c
 USER_C_SOURCES += apps/modules/app/power_modules/power_modules_handler_zte.c
 USER_C_SOURCES += apps/modules/hardware/flash.c
+USER_C_SOURCES += apps/modules/hardware/hw_adc.c
 USER_C_SOURCES += apps/modules/hardware/modbus_slave_txrx.c
 USER_C_SOURCES += apps/modules/hardware/modbus_spec.c
 USER_C_SOURCES += apps/modules/hardware/storage.c
@@ -116,7 +117,6 @@ endif
 ifneq ($(call ifdef_any_of,STORAGE_OPS_W25Q256),)
 USER_C_SOURCES += apps/modules/hardware/storage_w25q256.c
 endif
-USER_C_SOURCES += apps/modules/hardware/hw_adc.c
 USER_C_SOURCES += apps/modules/drivers/spi_txrx.c
 USER_C_SOURCES += apps/modules/drivers/can_txrx.c
 USER_C_SOURCES += apps/modules/drivers/can_ops_hal.c
@@ -130,8 +130,8 @@ USER_C_SOURCES += apps/modules/os/net_utils.c
 USER_C_SOURCES += apps/modules/os/cpu_utils.c
 USER_C_SOURCES += apps/modules/os/log.c
 USER_C_SOURCES += apps/modules/os/object_class.c
-USER_C_SOURCES += apps/modules/tests/test_serial.c
 USER_C_SOURCES += apps/modules/os/soft_timer.c
+USER_C_SOURCES += apps/modules/tests/test_serial.c
 
 USER_C_SOURCES += Middlewares/Third_Party/LwIP/src/core/def.c
 USER_C_SOURCES += Middlewares/Third_Party/LwIP/src/core/ipv4/ip4_addr.c
