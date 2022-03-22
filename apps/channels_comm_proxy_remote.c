@@ -584,7 +584,7 @@ static void channels_comm_proxy_set_connect_state(channels_comm_proxy_ctx_t *cha
 	update_connect_state(&channel_ctx->connect_state, state);
 }
 
-uint8_t channels_comm_proxy_get_connect_state(channels_info_t *channels_info, uint8_t proxy_channel_index)
+static uint8_t channels_comm_proxy_get_connect_state(channels_info_t *channels_info, uint8_t proxy_channel_index)
 {
 	channels_comm_proxy_ctx_t *channels_comm_proxy_ctx = (channels_comm_proxy_ctx_t *)channels_info->channels_comm_proxy_ctx;
 	channels_comm_proxy_channel_ctx_t *channel_ctx = channels_comm_proxy_ctx->channels_comm_proxy_channel_ctx + proxy_channel_index;
@@ -592,7 +592,7 @@ uint8_t channels_comm_proxy_get_connect_state(channels_info_t *channels_info, ui
 	return get_connect_state(&channel_ctx->connect_state);
 }
 
-uint32_t channels_comm_proxy_get_connect_stamp(channels_info_t *channels_info, uint8_t proxy_channel_index)
+static uint32_t channels_comm_proxy_get_connect_stamp(channels_info_t *channels_info, uint8_t proxy_channel_index)
 {
 	channels_comm_proxy_ctx_t *channels_comm_proxy_ctx = (channels_comm_proxy_ctx_t *)channels_info->channels_comm_proxy_ctx;
 	channels_comm_proxy_channel_ctx_t *channel_ctx = channels_comm_proxy_ctx->channels_comm_proxy_channel_ctx + proxy_channel_index;
@@ -600,7 +600,39 @@ uint32_t channels_comm_proxy_get_connect_stamp(channels_info_t *channels_info, u
 	return get_connect_stamp(&channel_ctx->connect_state);
 }
 
-#define RESPONSE_TIMEOUT 500
+#define RESPONSE_TIMEOUT 200
+
+static void handle_channel_connect_timeout(channels_info_t *channels_info)
+{
+	channels_config_t *channels_config = channels_info->channels_config;
+	proxy_channel_item_t *proxy_channel_item;
+	uint32_t ticks = osKernelSysTick();
+	uint32_t fault = 0;
+	int i;
+
+	for(i = 0; i < channels_info->channel_number; i++) {
+		channel_info_t *channel_info = channels_info->channel_info + i;
+		proxy_channel_item = get_proxy_channel_item_by_channel_id(&channels_config->proxy_channel_info, channel_info->channel_id);
+
+		if(proxy_channel_item == NULL) {
+			continue;
+		}
+
+		channel_info->connect_state = channels_comm_proxy_get_connect_state(channels_info, proxy_channel_item->proxy_channel_index);
+
+		if(channel_info->connect_state != 0) {
+			channel_info->channel_connect_alive_stamps = ticks;
+		}
+
+		if(ticks_duration(ticks, channel_info->channel_connect_alive_stamps) >= 3000) {
+			fault = 1;
+		}
+
+		if(get_fault(channel_info->faults, CHANNEL_FAULT_CONNECT_TIMEOUT) != fault) {
+			set_fault(channel_info->faults, CHANNEL_FAULT_CONNECT_TIMEOUT, fault);
+		}
+	}
+}
 
 static void channels_comm_proxy_request_periodic(channels_info_t *channels_info)
 {
@@ -616,6 +648,8 @@ static void channels_comm_proxy_request_periodic(channels_info_t *channels_info)
 	}
 
 	channels_comm_proxy_ctx->periodic_stamp = ticks;
+
+	handle_channel_connect_timeout(channels_info);
 
 	for(j = 0; j < proxy_channel_number; j++) {
 		proxy_channel_item_t *proxy_channel_item = get_proxy_channel_item_by_proxy_channel_index(&channels_config->proxy_channel_info, j);

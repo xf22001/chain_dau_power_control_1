@@ -6,7 +6,7 @@
  *   文件名称：modbus_addr_handler.c
  *   创 建 者：肖飞
  *   创建日期：2020年07月17日 星期五 10时13分49秒
- *   修改日期：2022年03月15日 星期二 11时50分01秒
+ *   修改日期：2022年03月22日 星期二 14时13分28秒
  *   描    述：
  *
  *================================================================*/
@@ -612,7 +612,7 @@ static uint16_t get_channnel_info_by_id_field(channels_info_t *channels_info, ui
 			if(proxy_channel_item == NULL) {
 				return 0xffff;
 			} else {
-				return channels_comm_proxy_get_connect_state(channels_info, proxy_channel_item->proxy_channel_index);
+				return channel_info->connect_state;
 			}
 		}
 		break;
@@ -923,8 +923,8 @@ void channels_modbus_data_action(void *fn_ctx, void *chain_ctx)
 		break;
 
 		case MODBUS_ADDR_RELAY_FAULT_ID: {
-			power_manager_info_t *power_manager_info = (power_manager_info_t *)channels_info->power_manager_info;
-			power_manager_group_info_t *power_manager_group_info = power_manager_info->power_manager_group_info + 0;
+			//power_manager_info_t *power_manager_info = (power_manager_info_t *)channels_info->power_manager_info;
+			//power_manager_group_info_t *power_manager_group_info = power_manager_info->power_manager_group_info + 0;
 			//modbus_data_value_r(modbus_data_ctx, pdu_group_info->relay_fault_id);
 		}
 		break;
