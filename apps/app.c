@@ -249,6 +249,7 @@ void app(void const *argument)
 		snprintf(app_info->mechine_info.gw, sizeof(app_info->mechine_info.gw), "%d.%d.%d.%d", 10, 42, 0, 1);
 		app_info->mechine_info.dhcp_enable = 1;
 		app_info->mechine_info.reset_config = 0;
+		app_info->mechine_info.tz = 8;
 		app_save_config();
 	}
 
