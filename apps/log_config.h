@@ -5,8 +5,8 @@
  *   
  *   文件名称：log_config.h
  *   创 建 者：肖飞
- *   创建日期：2021年03月22日 星期一 17时09分39秒
- *   修改日期：2021年03月22日 星期一 17时09分56秒
+ *   创建日期：2021年03月22日 星期一 16时50分40秒
+ *   修改日期：2022年03月18日 星期五 17时33分30秒
  *   描    述：
  *
  *================================================================*/
@@ -17,14 +17,14 @@ extern "C"
 {
 #endif
 
-#ifdef __cplusplus
-}
-#endif
-
 #if !defined(LOG_NONE)
 #if !defined(LOG_UDP) && !defined(LOG_UART) && !defined(LOG_FILE)
 #define LOG_UDP
 #endif
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif //_LOG_CONFIG_H

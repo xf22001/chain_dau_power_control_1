@@ -17,10 +17,6 @@ extern "C"
 {
 #endif
 
-#ifdef __cplusplus
-}
-#endif
-
 #include "app_platform.h"
 #include "cmsis_os.h"
 
@@ -76,7 +72,6 @@ typedef enum {
 app_info_t *get_app_info(void);
 int app_load_config(void);
 int app_save_config(void);
-int app_event_init(size_t size);
 void app_init(void);
 void send_app_event(app_event_t event, uint32_t timeout);
 void load_app_display_cache(app_info_t *app_info);
@@ -86,5 +81,9 @@ void app_set_reset_config(void);
 uint8_t app_get_reset_config(void);
 void app(void const *argument);
 void idle(void const *argument);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //_APP_H

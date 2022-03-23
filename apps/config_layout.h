@@ -6,7 +6,7 @@
  *   文件名称：config_layout.h
  *   创 建 者：肖飞
  *   创建日期：2021年08月25日 星期三 08时24分46秒
- *   修改日期：2021年08月25日 星期三 11时38分24秒
+ *   修改日期：2022年03月18日 星期五 17时33分17秒
  *   描    述：
  *
  *================================================================*/
@@ -15,10 +15,6 @@
 #ifdef __cplusplus
 extern "C"
 {
-#endif
-
-#ifdef __cplusplus
-}
 #endif
 
 #include "app_platform.h"
@@ -57,5 +53,9 @@ static inline config_layout_t *get_config_layout(void)
 {
 	return (config_layout_t *)0;
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //_CONFIG_LAYOUT_H
