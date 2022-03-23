@@ -46,6 +46,7 @@ typedef struct {
 
 	uint8_t upgrade_enable;
 	uint8_t reset_config;
+	char tz;
 } mechine_info_t;
 
 #pragma pack(pop)

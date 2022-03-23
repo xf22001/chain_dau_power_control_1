@@ -216,8 +216,6 @@ void app(void const *argument)
 	display_info_t *display_info = NULL;
 	int ret;
 
-	app_init();
-
 	app_info = (app_info_t *)os_calloc(1, sizeof(app_info_t));
 
 	OS_ASSERT(app_info != NULL);
