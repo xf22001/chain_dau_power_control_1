@@ -6,7 +6,7 @@
  *   文件名称：channels_comm_proxy_remote.c
  *   创 建 者：肖飞
  *   创建日期：2021年09月16日 星期四 10时34分46秒
- *   修改日期：2022年03月22日 星期二 08时55分20秒
+ *   修改日期：2022年05月13日 星期五 16时25分09秒
  *   描    述：
  *
  *================================================================*/
@@ -819,11 +819,9 @@ static void channels_comm_proxy_request(channels_info_t *channels_info, can_info
 			}
 
 			cmd_ctx->send_stamp = ticks;
-			cmd_ctx->send_error = 0;
 			ret = can_tx_data(can_info, &channels_comm_proxy_ctx->can_tx_msg, 10);
 
 			if(ret != 0) {//发送失败
-				cmd_ctx->send_error = 1;
 				channels_comm_proxy_set_connect_state(channels_comm_proxy_ctx, j, 0);
 
 				debug("send channel %d(%d), cmd %d(%s), index:%d error!",
