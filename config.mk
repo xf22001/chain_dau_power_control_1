@@ -6,7 +6,7 @@
 #   文件名称：config.mk
 #   创 建 者：肖飞
 #   创建日期：2021年08月26日 星期四 11时10分19秒
-#   修改日期：2022年03月23日 星期三 11时38分08秒
+#   修改日期：2022年06月02日 星期四 16时28分05秒
 #   描    述：
 #
 #================================================================
@@ -29,6 +29,12 @@ CONFIG_LIST += CHARGER_CHANNEL_PROXY_REMOTE
 CONFIG_LIST += SAL_WIZNET
 #CONFIG_LIST += SAL_AT
 #CONFIG_LIST += SAL_DTU
+
+#路特斯
+CONFIG_LIST += POWER_MANAGER_GROUP_POLICY_1
+
+#10枪环形
+#CONFIG_LIST += POWER_MANAGER_GROUP_POLICY_2
 
 $(foreach config_item,$(CONFIG_LIST),$(eval $(addprefix CONFIG_,$(config_item)) := $(config_item)))
 

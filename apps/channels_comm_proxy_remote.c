@@ -6,7 +6,7 @@
  *   文件名称：channels_comm_proxy_remote.c
  *   创 建 者：肖飞
  *   创建日期：2021年09月16日 星期四 10时34分46秒
- *   修改日期：2022年05月13日 星期五 16时25分09秒
+ *   修改日期：2022年06月02日 星期四 17时10分07秒
  *   描    述：
  *
  *================================================================*/
@@ -153,20 +153,22 @@ static int response_channel_require(channels_info_t *channels_info, void *_comma
 	channel_info_t *channel_info = channels_info->channel_info + proxy_channel_item->channel_id;
 	channel_require_t *channel_require = (channel_require_t *)channels_comm_proxy_ctx->can_rx_msg->Data;
 	uint8_t channel_fault = 0;
+	uint16_t voltage;
+	uint16_t current;
 
-	channel_info->require_voltage = get_u16_from_u8_lh(
-	                                    channel_require->require_voltage_l,
-	                                    channel_require->require_voltage_h);
-	channel_info->require_current = get_u16_from_u8_lh(
-	                                    channel_require->require_current_l,
-	                                    channel_require->require_current_h);
+	voltage = get_u16_from_u8_lh(
+	              channel_require->require_voltage_l,
+	              channel_require->require_voltage_h);
+	current = get_u16_from_u8_lh(
+	              channel_require->require_current_l,
+	              channel_require->require_current_h);
+
+	channel_require_update(channel_info, voltage, current, CHANNEL_REQUIRE_MODE_NORMAL);
 
 	//debug("channel_id:%d require_voltage:%d, require_current:%d",
 	//      channel_info->channel_id,
 	//      channel_info->require_voltage,
 	//      channel_info->require_current);
-
-	channel_info->remote_require_state = channel_require->require_state;
 
 	if(data_ctx->require_state != channel_require->require_state) {
 		debug("channel_id:%d require_state %s -> %s",

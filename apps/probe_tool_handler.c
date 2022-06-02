@@ -6,7 +6,7 @@
  *   文件名称：probe_tool_handler.c
  *   创 建 者：肖飞
  *   创建日期：2020年03月20日 星期五 12时48分07秒
- *   修改日期：2022年03月11日 星期五 13时14分07秒
+ *   修改日期：2022年06月02日 星期四 17时00分08秒
  *   描    述：
  *
  *================================================================*/
@@ -362,10 +362,7 @@ static void fn7(request_t *request)
 	}
 
 	channel_info = channels_info->channel_info + channel;
-
-	channel_info->require_voltage = voltage;
-	channel_info->require_current = current;
-	channel_info->remote_require_state = state;
+	channel_require_update(channel_info, voltage, current, CHANNEL_REQUIRE_MODE_NORMAL);
 }
 
 static void fn8(request_t *request)
