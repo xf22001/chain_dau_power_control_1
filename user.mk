@@ -6,7 +6,7 @@
 #   文件名称：user.mk
 #   创 建 者：肖飞
 #   创建日期：2019年10月25日 星期五 13时04分38秒
-#   修改日期：2022年06月05日 星期日 10时52分16秒
+#   修改日期：2022年06月05日 星期日 11时48分52秒
 #   描    述：
 #
 #================================================================
@@ -18,12 +18,7 @@ ifdef_any_of = $(filter-out undefined,$(foreach v,$(1),$(origin $(addprefix CONF
 
 include sal/sal.mk
 
-#路特斯液冷 spec_1
-#南宁十枪 spec_2
-PROJECT_SPEC := spec_1
-
 USER_C_INCLUDES += -Iapps
-USER_C_INCLUDES += -Iapps/$(PROJECT_SPEC)
 USER_C_INCLUDES += -Iapps/modules
 USER_C_INCLUDES += -Iapps/modules/os
 USER_C_INCLUDES += -Iapps/modules/drivers
@@ -49,22 +44,22 @@ USER_C_INCLUDES += -IMiddlewares/Third_Party/LwIP/src/include/compat/posix/sys
 USER_C_INCLUDES += -IMiddlewares/Third_Party/LwIP/src/include/compat/stdc
 USER_C_INCLUDES += -IMiddlewares/Third_Party/LwIP/system/arch
 
-USER_C_SOURCES += apps/$(PROJECT_SPEC)/os_memory.c
-USER_C_SOURCES += apps/$(PROJECT_SPEC)/os_random.c
-USER_C_SOURCES += apps/$(PROJECT_SPEC)/app.c
-USER_C_SOURCES += apps/$(PROJECT_SPEC)/uart_debug_handler.c
-USER_C_SOURCES += apps/$(PROJECT_SPEC)/probe_tool_handler.c
-USER_C_SOURCES += apps/$(PROJECT_SPEC)/channels_config.c
-USER_C_SOURCES += apps/$(PROJECT_SPEC)/can_config.c
-USER_C_SOURCES += apps/$(PROJECT_SPEC)/storage_config.c
-USER_C_SOURCES += apps/$(PROJECT_SPEC)/modbus_addr_handler.c
-USER_C_SOURCES += apps/$(PROJECT_SPEC)/display_cache.c
-USER_C_SOURCES += apps/$(PROJECT_SPEC)/power_manager_group_policy_handler.c
+USER_C_SOURCES += apps/os_memory.c
+USER_C_SOURCES += apps/os_random.c
+USER_C_SOURCES += apps/app.c
+USER_C_SOURCES += apps/uart_debug_handler.c
+USER_C_SOURCES += apps/probe_tool_handler.c
+USER_C_SOURCES += apps/channels_config.c
+USER_C_SOURCES += apps/can_config.c
+USER_C_SOURCES += apps/storage_config.c
+USER_C_SOURCES += apps/modbus_addr_handler.c
+USER_C_SOURCES += apps/display_cache.c
+USER_C_SOURCES += apps/power_manager_group_policy_handler.c
 ifneq ($(call ifdef_any_of,SAL_WIZNET),)
-USER_C_SOURCES += apps/$(PROJECT_SPEC)/wiznet_spi.c
+USER_C_SOURCES += apps/wiznet_spi.c
 endif
 ifneq ($(call ifdef_any_of,CHARGER_CHANNEL_PROXY_REMOTE),)
-USER_C_SOURCES += apps/$(PROJECT_SPEC)/channels_comm_proxy_remote.c
+USER_C_SOURCES += apps/channels_comm_proxy_remote.c
 endif
 
 USER_C_SOURCES += apps/modules/app/config_utils.c
